@@ -1,7 +1,6 @@
 package com.wave.keeper.wave_keeper.tables;
 
-
-import org.hibernate.annotations.ManyToAny;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,44 +9,42 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "endereco")
-public class Endereco {
+@Table(name = "direitos")
+public class MusicRights {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     private Integer id;
 
-    @Column(name = "rua", nullable = false, length = 150)
-    private String rua;
-
-    @Column(name = "numero", nullable = false, length = 10)
-    private Integer numero;
-
-    @Column(name = "bairro", nullable = false, length = 150)
-    private String bairro;
-
-    @Column(name = "cidade", nullable = false, length = 150)
-    private String cidade;
-
-    @Column(name = "estado", nullable = false, length = 150)
-    private String estado;
+    @ManyToOne
+    @JoinColumn(name = "musica_id", nullable = false)
+    private Musica musica;
 
     @ManyToOne
-    @JoinColumn(name = "pais_id", nullable = false)
-    private Pais pais;
+    @JoinColumn(name = "propyter_id", nullable = false)
+    private Usuario vendedor;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_start", nullable = false)
+    private Date dateStart;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_over", nullable = false)
+    private Date dateOver;
+
 
 }
