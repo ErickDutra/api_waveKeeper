@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "direitos")
-public class MusicRights {
+public class Rights {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

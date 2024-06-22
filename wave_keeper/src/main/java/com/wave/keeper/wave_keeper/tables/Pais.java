@@ -25,6 +25,9 @@ public class Pais {
     @Column(name = "id", nullable = false, unique = true)
     private Integer id;
 
+    @Column(name = "sigla", nullable = false, length = 2)
+    private String sigla;
+
     @Column(name = "nome", nullable = false, length = 150)
     private String nome;
 }
