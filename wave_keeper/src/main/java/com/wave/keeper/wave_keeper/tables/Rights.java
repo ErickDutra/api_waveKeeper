@@ -31,8 +31,8 @@ public class Rights {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "musica_id", nullable = false)
-    private Musica musica;
+    @JoinColumn(name = "entidade_id", nullable = false)
+    private Entidade entidade;
 
     @ManyToOne
     @JoinColumn(name = "propyter_id", nullable = false)
@@ -43,7 +43,7 @@ public class Rights {
     private Date dateStart;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date_over", nullable = false)
+    @Column(name = "date_over", nullable = true)
     private Date dateOver;
 
 

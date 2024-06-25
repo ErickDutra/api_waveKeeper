@@ -22,8 +22,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "musica")
-public class Musica {
+@Table(name = "entidade")
+public class Entidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +32,9 @@ public class Musica {
 
     @Column(name = "Titulo", nullable = false, length = 150)
     private String nome;
+
+    @Column(name = "Url", nullable = false)
+    private String url;
 
     @ManyToOne
     @JoinColumn(name = "propietario_id", nullable = false)

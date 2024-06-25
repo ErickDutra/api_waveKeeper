@@ -28,8 +28,14 @@ public class RightsService {
         return rightsRepository.save(right);
     }
 
-    public Rights updateRight(Rights right) {
-        return rightsRepository.save(right);
+    
+    public Rights updateRight(Long id, Rights rightsDetails) {
+        Rights rightsToUpdate = rightsRepository.findById(id).orElse(null);
+        rightsToUpdate.setEntidade(rightsDetails.getEntidade());
+        rightsToUpdate.setVendedor(rightsDetails.getVendedor());
+        rightsToUpdate.setDateStart(rightsDetails.getDateStart());
+        rightsToUpdate.setDateOver(rightsDetails.getDateOver());
+        return rightsRepository.save(rightsToUpdate);
     }
 
     public List<Rights> getAllRights() {

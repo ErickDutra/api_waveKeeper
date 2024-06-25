@@ -34,8 +34,8 @@ public class Transacoes {
     private Double valor;
 
     @ManyToOne
-    @JoinColumn(name = "musica_id", nullable = false)
-    private Musica musica;
+    @JoinColumn(name = "entidade_id", nullable = false)
+    private Entidade entidade;
 
     @ManyToOne
     @JoinColumn(name = "vendedor_id", nullable = false)

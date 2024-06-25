@@ -14,8 +14,7 @@ public class EnderecoService{
     public EnderecoService(EnderecoRepository enderecoRepository) {
     this.EnderecoRepository = enderecoRepository;
     }
-
-    
+ 
     public List<Endereco> getAllEnderecos() {
         return EnderecoRepository.findAll();
     }
