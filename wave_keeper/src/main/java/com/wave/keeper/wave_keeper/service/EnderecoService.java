@@ -35,7 +35,7 @@ public class EnderecoService{
         Endereco EnderecoToUpdate = getEnderecoById(id);
         EnderecoToUpdate.setRua(Endereco.getRua());
         EnderecoToUpdate.setNumero(Endereco.getNumero());
-        EnderecoToUpdate.setBairro(Endereco.getBairro());
+        EnderecoToUpdate.setLogradouro(Endereco.getLogradouro());
         EnderecoToUpdate.setCidade(Endereco.getCidade());
         EnderecoToUpdate.setEstado(Endereco.getEstado());
         EnderecoToUpdate.setPais(Endereco.getPais());

@@ -34,19 +34,30 @@ public class UsuarioService{
         return new UsuarioDto(usuarioDb.getId(), usuarioDb.getNome(), usuarioDb.getCpf_cnpj(), usuarioDb.getEmail(), usuarioDb.getEndereco(), usuarioDb.getContato());
     }
 
-    public UsuarioDto  saveUsuario(UsuarioDto usuarioDto) {
+    public UsuarioDto saveUsuario(UsuarioDto usuarioDto) {
         Usuario usuario = new Usuario();
+        Endereco enderecoDto = usuarioDto.endereco();
+        Contato contatoDto = usuarioDto.contato();
+
+    
         usuario.setNome(usuarioDto.nome());
-        usuario.setCpf_cnpj(usuarioDto.cpfCnpj());
+        usuario.setCpf_cnpj(usuarioDto.cpf_cnpj());
         usuario.setEmail(usuarioDto.email());
-        usuario.setEndereco(endereco);
-        usuario.getContato().setNumero(contato.getNumero());
-        usuario.getContato().setSufixo(contato.getSufixo());
-        usuario.getContato().setDDD(contato.getDDD());
-        Endereco endereco = new Endereco();
+        
+        Contato contato = usuario.getContato();
+        contato.setNumero(contatoDto.getNumero());
+        contato.setSufixo(contatoDto.getSufixo());
+        contato.setDDD(contatoDto.getDDD());
+        usuario.setContato(contato);
+        Endereco endereco = usuario.getEndereco();
+        endereco.setNumero(enderecoDto.getNumero());
+        endereco.setLogradouro(enderecoDto.getLogradouro());
+        endereco.setCidade(enderecoDto.getCidade());
+        endereco.setEstado(enderecoDto.getEstado());
+        endereco.setRua(enderecoDto.getRua());
 
         Usuario usuarioDb = usuarioRepository.save(usuario);
-
+      
         return new UsuarioDto(usuarioDb.getId(), usuarioDb.getNome(), usuarioDb.getCpf_cnpj(), usuarioDb.getEmail(), usuarioDb.getEndereco(), usuarioDb.getContato());
     }
 
@@ -55,17 +66,39 @@ public class UsuarioService{
     }
 
     public UsuarioDto updateUsuario(Long id, UsuarioDto usuarioDto) {
-        final Usuario usuario = usuarioRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
 
         usuario.setNome(usuarioDto.nome());
-        usuario.setCpf_cnpj(usuarioDto.cpfCnpj());
+        usuario.setCpf_cnpj(usuarioDto.cpf_cnpj());
         usuario.setEmail(usuarioDto.email());
-        usuario.setEndereco(endereco);
-        usuario.getContato().setNumero(contato.getNumero());
-        usuario.getContato().setSufixo(contato.getSufixo());
-        usuario.getContato().setDDD(contato.getDDD());
-        return new UsuarioDto(usuario.getId(), usuario.getNome(), usuario.getCpf_cnpj(), usuario.getEmail(), usuario.getEndereco(), usuario.getContato());
+
+        Endereco enderecoDto = usuarioDto.endereco();
+        Contato contatoDto = usuarioDto.contato();
+
+        Endereco endereco = usuario.getEndereco();
+
+        endereco.setNumero(enderecoDto.getNumero());
+        endereco.setLogradouro(enderecoDto.getLogradouro());
+        endereco.setCidade(enderecoDto.getCidade());
+        endereco.setEstado(enderecoDto.getEstado());
+        endereco.setRua(enderecoDto.getRua());
+
+        Contato contato = usuario.getContato();
+        contato.setNumero(contatoDto.getNumero());
+        contato.setSufixo(contatoDto.getSufixo());
+        contato.setDDD(contatoDto.getDDD());
+
+        usuarioRepository.save(usuario);
+
+        return new UsuarioDto(
+                usuario.getId(), 
+                usuario.getNome(), 
+                usuario.getCpf_cnpj(), 
+                usuario.getEmail(), 
+                usuario.getEndereco(), 
+                usuario.getContato()
+        );
     }
     
 }

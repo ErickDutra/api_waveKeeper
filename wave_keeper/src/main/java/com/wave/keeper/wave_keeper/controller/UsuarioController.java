@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wave.keeper.wave_keeper.dto.UsuarioDto;
 import com.wave.keeper.wave_keeper.service.UsuarioService;
-import com.wave.keeper.wave_keeper.tables.Usuario;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
