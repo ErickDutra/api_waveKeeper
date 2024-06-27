@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.wave.keeper.wave_keeper.dto.TransacoesDto;
 import com.wave.keeper.wave_keeper.repository.TransacoesRepository;
+import com.wave.keeper.wave_keeper.tables.Entidade;
 import com.wave.keeper.wave_keeper.tables.Transacoes;
 
 @Service
@@ -16,8 +18,21 @@ public class TransacoesService {
         this.transacoesRepository = transacoesRepository;
     }
 
-    public Transacoes criarTransacao(Transacoes transacao) {
-        return transacoesRepository.save(transacao);
+    public TransacoesDto criarTransacao(Transacoes transacao) {
+        Transacoes transacoes = new Transacoes();
+        Entidade entidadeDto = transacao.getEntidade();
+        Entidade entidade = transacoes.getEntidade();
+        
+        transacoes.setValor(transacao.getValor());
+        entidade.setId(entidadeDto.getId());
+        transacoes.setEntidade(entidade);
+        transacoes.setVendedor(transacao.getVendedor());
+        transacoes.setComprador(transacao.getComprador());
+        transacoes.setDateTransacao(transacao.getDateTransacao());
+
+        Transacoes transacaoDb = transacoesRepository.save(transacoes);
+        return new TransacoesDto(transacaoDb.getId(), transacaoDb.getValor(), transacaoDb.getEntidade(), transacaoDb.getVendedor(), transacaoDb.getComprador(), transacaoDb.getDateTransacao());
+        
     }
 
     public Transacoes buscarTransacaoPorId(Long id) {
