@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wave.keeper.wave_keeper.dto.ContatoDto;
 import com.wave.keeper.wave_keeper.service.ContatoService;
-import com.wave.keeper.wave_keeper.tables.Contato;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,27 +26,27 @@ public class ContatoController {
     private ContatoService contatoService;
 
     @GetMapping("/{id}")
-    public Contato getContato(@PathVariable Long id) {
+    public ContatoDto getContato(@PathVariable Long id) {
             return contatoService.getContato(id);
     }
     
     @GetMapping
-    public List<Contato> getAllContatos() {
+    public List<ContatoDto> getAllContatos() {
         return contatoService.getContatos();
     }
     
     @PostMapping
-    public Contato createContato(@RequestBody Contato contato) {
+    public ContatoDto createContato(@RequestBody ContatoDto contato) {
         return contatoService.saveContato(contato);
     }
     
     @PutMapping("/{id}")
-    public Contato updateContato(@PathVariable Long id, @RequestBody Contato contato) {
+    public ContatoDto  updateContato(@PathVariable Long id, @RequestBody ContatoDto contato) {
         return contatoService.updateContato(contato);
     }
     
     @DeleteMapping("/{id}")
-    public void deleteContato(@PathVariable Long id) {
-        contatoService.deleteContato(id);
+    public void deleteContato(@PathVariable ContatoDto contato) {
+        contatoService.deleteContato(contato);
     }
 }

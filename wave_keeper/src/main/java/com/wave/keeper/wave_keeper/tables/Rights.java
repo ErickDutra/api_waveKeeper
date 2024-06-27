@@ -28,7 +28,7 @@ public class Rights {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "entidade_id", nullable = false)

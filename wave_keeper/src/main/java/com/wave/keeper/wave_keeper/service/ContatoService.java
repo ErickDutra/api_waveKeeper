@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.wave.keeper.wave_keeper.dto.ContatoDto;
 import com.wave.keeper.wave_keeper.repository.ContatoRepository;
 import com.wave.keeper.wave_keeper.tables.Contato;
+
+import jakarta.persistence.EntityNotFoundException;
 
 
 
@@ -20,26 +23,44 @@ public class ContatoService {
         this.contatoRepository = contatoRepository;
     }
 
-    public List<Contato> getContatos() {
-        return contatoRepository.findAll();
+    public List<ContatoDto> getContatos() {
+        return contatoRepository.findAll().stream()
+                .map(contato -> new ContatoDto(contato.getId(), contato.getNumero(), contato.getDDD(), contato.getSufixo()))
+                .toList();
     }
 
-    public Contato getContato(Long id) {
-        return contatoRepository.findById(id).orElse(null);
+    public ContatoDto getContato(Long id) {
+         Contato contatoDb = contatoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Contato não encontrado para ID: " + id));
+        return new ContatoDto(contatoDb.getId(), contatoDb.getNumero(), contatoDb.getDDD(), contatoDb.getSufixo());
     }
 
-    public Contato saveContato(Contato contato) {
-        return contatoRepository.save(contato);
+    public ContatoDto saveContato(ContatoDto contatoDto) {
+        Contato contato = new Contato();
+        contato.setNumero(contatoDto.numero());
+        contato.setSufixo(contatoDto.sufixo());
+        contato.setDDD(contatoDto.DDD());
+
+        Contato contatoDb = contatoRepository.save(contato);
+        return new ContatoDto(contatoDb.getId(),contatoDb.getNumero(), contatoDb.getSufixo(), contatoDb.getDDD());
     }
 
-    public void deleteContato(Long id) {
-        contatoRepository.deleteById(id);
+    public void deleteContato(ContatoDto contatoDto) {
+        Contato contato = contatoRepository.findById(contatoDto.id())
+                .orElseThrow(() -> new EntityNotFoundException("Contato não encontrado para ID: " + contatoDto.id()));
+        contatoRepository.delete(contato);
     }
 
-    public Contato updateContato(Contato contato) {
-        return contatoRepository.save(contato);
-    }
-
+    public ContatoDto updateContato(ContatoDto contatoDto) {
+        Contato contato = contatoRepository.findById(contatoDto.id())
+                .orElseThrow(() -> new EntityNotFoundException("Contato não encontrado para ID: " + contatoDto.id()));
     
+        contato.setNumero(contatoDto.numero());
+        contato.setDDD(contatoDto.DDD());
+        contato.setSufixo(contatoDto.sufixo());
+    
+        Contato updatedContato = contatoRepository.save(contato);
+        return new ContatoDto(updatedContato.getId(), updatedContato.getNumero(), updatedContato.getDDD(), updatedContato.getSufixo());
+    }
 
 }

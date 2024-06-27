@@ -25,7 +25,7 @@ public class Contato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
 
     @Column(name = "sufixo", nullable = false, length = 150)
     private Integer sufixo;

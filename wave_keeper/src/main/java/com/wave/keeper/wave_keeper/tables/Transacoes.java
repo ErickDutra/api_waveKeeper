@@ -28,7 +28,7 @@ public class Transacoes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
 
     @Column(name = "valor", nullable = false)
     private Double valor;

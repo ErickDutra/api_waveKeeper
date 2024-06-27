@@ -61,8 +61,10 @@ public class UsuarioService{
         return new UsuarioDto(usuarioDb.getId(), usuarioDb.getNome(), usuarioDb.getCpf_cnpj(), usuarioDb.getEmail(), usuarioDb.getEndereco(), usuarioDb.getContato());
     }
 
-    public void deleteUsuario(Long id) {
-        usuarioRepository.deleteById(id);
+    public void deleteUsuario(UsuarioDto usuarioDto) {
+        Usuario usuario = usuarioRepository.findById(usuarioDto.id())
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + usuarioDto.id()));
+        usuarioRepository.delete(usuario);
     }
 
     public UsuarioDto updateUsuario(Long id, UsuarioDto usuarioDto) {
