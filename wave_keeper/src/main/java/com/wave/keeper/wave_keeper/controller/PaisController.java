@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wave.keeper.wave_keeper.dto.PaisDto;
 import com.wave.keeper.wave_keeper.service.PaisService;
 import com.wave.keeper.wave_keeper.tables.Pais;
 
@@ -38,7 +39,7 @@ public class PaisController {
         }
 
     @GetMapping("/all")
-    public List<Pais> getAllPaises() {
+    public List<PaisDto> getAllPaises() {
         return paisService.getAllPaises();
     }
 

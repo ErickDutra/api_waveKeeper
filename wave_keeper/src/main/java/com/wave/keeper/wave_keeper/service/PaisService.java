@@ -1,9 +1,11 @@
 package com.wave.keeper.wave_keeper.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.wave.keeper.wave_keeper.dto.PaisDto;
 import com.wave.keeper.wave_keeper.repository.PaisRepository;
 import com.wave.keeper.wave_keeper.tables.Pais;
 
@@ -17,20 +19,23 @@ public class PaisService {
     }
 
     
-    public List<Pais> getAllPaises() {
-        return paisRepository.findAll();
+    public List<PaisDto> getAllPaises() {
+        return paisRepository.findAll().stream()
+        .map(pais -> new PaisDto(pais.getId(), pais.getNome(),pais.getSigla())).collect(Collectors.toList());
     }
 
-    public Pais getPaisById(Long id) {
-        return paisRepository.findById(id).orElseThrow(() -> new RuntimeException("Pais não encontrado"));
-    }  
+    public PaisDto getPais(Long id) {
+        Pais pais = paisRepository.findById(id).orElseThrow(() -> new RuntimeException("Pais não encontrado para ID: " + id));
+        return new PaisDto(pais.getId(), pais.getNome(), pais.getSigla() );
+    }
 
     public Pais savePais(Pais pais) {
         return paisRepository.save(pais);
     }
 
     public void deletePais(Long id) {
-        paisRepository.deleteById(id);
+        Pais paisDb = paisRepository.findById(id).orElseThrow(() -> new RuntimeException("Pais não encontrado para ID:"+ id));
+        paisRepository.delete(paisDb);
     }
 
     public Pais updatePais(Long id, Pais pais) {

@@ -9,6 +9,7 @@ import com.wave.keeper.wave_keeper.repository.TransacoesRepository;
 import com.wave.keeper.wave_keeper.tables.Entidade;
 import com.wave.keeper.wave_keeper.tables.Transacoes;
 
+
 @Service
 public class TransacoesService {
 
@@ -18,36 +19,46 @@ public class TransacoesService {
         this.transacoesRepository = transacoesRepository;
     }
 
-    public TransacoesDto criarTransacao(Transacoes transacao) {
+    public TransacoesDto criarTransacao(TransacoesDto transacao) {
         Transacoes transacoes = new Transacoes();
-        Entidade entidadeDto = transacao.getEntidade();
+        Entidade entidadeDto = transacoes.getEntidade();
         Entidade entidade = transacoes.getEntidade();
         
-        transacoes.setValor(transacao.getValor());
+        transacoes.setValor(transacoes.getValor());
         entidade.setId(entidadeDto.getId());
         transacoes.setEntidade(entidade);
-        transacoes.setVendedor(transacao.getVendedor());
-        transacoes.setComprador(transacao.getComprador());
-        transacoes.setDateTransacao(transacao.getDateTransacao());
+        transacoes.setVendedor(transacoes.getVendedor());
+        transacoes.setComprador(transacoes.getComprador());
+        transacoes.setDateTransacao(transacoes.getDateTransacao());
 
         Transacoes transacaoDb = transacoesRepository.save(transacoes);
         return new TransacoesDto(transacaoDb.getId(), transacaoDb.getValor(), transacaoDb.getEntidade(), transacaoDb.getVendedor(), transacaoDb.getComprador(), transacaoDb.getDateTransacao());
         
     }
 
-    public Transacoes buscarTransacaoPorId(Long id) {
-        return transacoesRepository.findById(id).orElse(null);
+    public TransacoesDto buscarTransacaoPorId(Long id) {
+        Transacoes transacoesDB = transacoesRepository.findById(id).orElseThrow(() -> new RuntimeException("Transação não encontrada para ID: " + id));
+        return new TransacoesDto(transacoesDB.getId(), transacoesDB.getValor(), transacoesDB.getEntidade(), transacoesDB.getVendedor(), transacoesDB.getComprador(), transacoesDB.getDateTransacao());
     }
 
-    public List<Transacoes> buscarTodasTransacoes() {
-        return transacoesRepository.findAll();
+    public List<TransacoesDto> buscarTodasTransacoes() {
+        return transacoesRepository.findAll().stream().map(trasacoes -> new TransacoesDto(trasacoes.getId(), trasacoes.getValor(), trasacoes.getEntidade(), trasacoes.getVendedor(), trasacoes.getComprador(), trasacoes.getDateTransacao())).toList();
     }
 
-    public Transacoes atualizarTransacao(Transacoes transacao) {
-        return transacoesRepository.save(transacao);
+    public TransacoesDto atualizarTransacao(Long id,TransacoesDto transacao) {
+        Transacoes transacoesDb = transacoesRepository.findById(id).orElseThrow(() -> new RuntimeException("Transação não encontrada para ID: " + id));
+        transacoesDb.setValor(transacao.valor());
+        transacoesDb.setEntidade(transacao.entidade());
+        transacoesDb.setVendedor(transacao.vendedor());
+        transacoesDb.setComprador(transacao.comprador());
+        transacoesDb.setDateTransacao(transacao.dateTransacao());
+
+        return new TransacoesDto(transacoesDb.getId(), transacoesDb.getValor(), transacoesDb.getEntidade(), transacoesDb.getVendedor(), transacoesDb.getComprador(), transacoesDb.getDateTransacao());
     }
 
-    public void deletarTransacao(Long id) {
-        transacoesRepository.deleteById(id);
+    public void deletarTransacao(TransacoesDto transacao) {
+        Transacoes transacoesDb = transacoesRepository.findById(transacao.id()).orElseThrow(() -> new RuntimeException("Transação não encontrada para ID:" + transacao.id()));
+        transacoesRepository.delete(transacoesDb);
+        
     }
 }
