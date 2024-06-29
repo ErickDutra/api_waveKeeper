@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wave.keeper.wave_keeper.dto.EntidadeDto;
 import com.wave.keeper.wave_keeper.service.EntidadeService;
-import com.wave.keeper.wave_keeper.tables.Entidade;
 
 
 
@@ -31,21 +31,21 @@ public class EntidadeController {
     private EntidadeService entidadeService;
 
     @PostMapping
-    public Entidade saveEntidade(@RequestParam Entidade entidade) {
+    public EntidadeDto saveEntidade(@RequestParam EntidadeDto entidade) {
         return entidadeService.saveEntidade(entidade);
     }
     @GetMapping("/{id}")
-    public Entidade getEntidadeById(@RequestParam Long Id) {
+    public EntidadeDto getEntidadeById(@RequestParam Long Id) {
         return entidadeService.getEntidadeById(Id);
     }
      
     @GetMapping("/all")
-    public List<Entidade>getAllEntidades() {
+    public List<EntidadeDto>getAllEntidades() {
         return getAllEntidades();
     }
 
     @PutMapping("/{id}")
-    public Entidade updateEntidade(@PathVariable Long id, @RequestBody Entidade entidade) {
+    public EntidadeDto updateEntidade(@PathVariable Long id, @RequestBody EntidadeDto entidade) {
         return updateEntidade(id, entidade);
     }
 
@@ -54,10 +54,5 @@ public class EntidadeController {
         deleteEntidade(id);
     }
 
-
-    
-
-    
-    
 
 }

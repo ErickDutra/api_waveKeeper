@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wave.keeper.wave_keeper.dto.PaisDto;
 import com.wave.keeper.wave_keeper.service.PaisService;
-import com.wave.keeper.wave_keeper.tables.Pais;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,12 +28,12 @@ public class PaisController {
     private PaisService paisService;
 
     @GetMapping("/{id}")
-    public Pais getPaisByIdPais(@RequestParam Long id) {
-        return paisService.getPaisById(id);
+    public PaisDto getPaisByIdPais(@RequestParam Long id) {
+        return paisService.getPais(id);
     }
     
     @PutMapping("/{id}")
-    public Pais updatePais(@PathVariable Long id, @RequestBody Pais pais) {
+    public PaisDto updatePais(@PathVariable Long id, @RequestBody PaisDto pais) {
         return paisService.updatePais(id, pais);
         }
 
@@ -50,7 +49,7 @@ public class PaisController {
 
 
     @PostMapping
-    public Pais savePais(@RequestBody Pais pais) {
+    public PaisDto savePais(@RequestBody PaisDto pais) {
         return paisService.savePais(pais);
     }
 

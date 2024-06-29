@@ -38,18 +38,18 @@ public class UsuarioService{
         Usuario usuario = new Usuario();
         Endereco enderecoDto = usuarioDto.endereco();
         Contato contatoDto = usuarioDto.contato();
+        Contato contato = usuario.getContato();
 
+        Endereco endereco = usuario.getEndereco();
         usuario.setNome(usuarioDto.nome());
         usuario.setCpf_cnpj(usuarioDto.cpf_cnpj());
         usuario.setEmail(usuarioDto.email());
         
-        Contato contato = usuario.getContato();
         contato.setNumero(contatoDto.getNumero());
         contato.setSufixo(contatoDto.getSufixo());
         contato.setDDD(contatoDto.getDDD());
         usuario.setContato(contato);
         
-        Endereco endereco = usuario.getEndereco();
         endereco.setNumero(enderecoDto.getNumero());
         endereco.setLogradouro(enderecoDto.getLogradouro());
         endereco.setCidade(enderecoDto.getCidade());

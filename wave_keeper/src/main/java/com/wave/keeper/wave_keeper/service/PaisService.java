@@ -29,8 +29,12 @@ public class PaisService {
         return new PaisDto(pais.getId(), pais.getNome(), pais.getSigla() );
     }
 
-    public Pais savePais(Pais pais) {
-        return paisRepository.save(pais);
+    public PaisDto savePais(PaisDto pais) {
+        Pais paisEntity = new Pais();
+        paisEntity.setNome(pais.nome());
+        paisEntity.setSigla(pais.sigla());
+        Pais paisDb = paisRepository.save(paisEntity);
+        return new PaisDto(paisDb.getId(), paisDb.getNome(), paisDb.getSigla());
     }
 
     public void deletePais(Long id) {
@@ -38,15 +42,12 @@ public class PaisService {
         paisRepository.delete(paisDb);
     }
 
-    public Pais updatePais(Long id, Pais pais) {
-        Pais paisToUpdate = getPaisById(id);
-        paisToUpdate.setNome(pais.getNome());
-        paisToUpdate.setSigla(pais.getSigla());
-        return paisRepository.save(paisToUpdate);
+    public PaisDto updatePais(Long id, PaisDto paisdto) {
+        final Pais pais = paisRepository.findById(id).orElseThrow(
+            () -> new RuntimeException("Pais não encontrado para ID: " + id));
+        pais.setNome(paisdto.nome());
+        pais.setSigla(paisdto.sigla());
+        final Pais paisDb = paisRepository.save(pais);
+        return new PaisDto(paisDb.getId(), paisDb.getNome(), paisDb.getSigla());
     }
-
-    
-
-
-
 }

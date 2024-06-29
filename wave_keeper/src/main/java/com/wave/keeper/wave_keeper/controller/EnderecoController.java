@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wave.keeper.wave_keeper.dto.EnderecoDto;
 import com.wave.keeper.wave_keeper.service.EnderecoService;
-import com.wave.keeper.wave_keeper.tables.Endereco;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,21 +27,21 @@ public class EnderecoController {
 
 
     @GetMapping
-    public Endereco getEndereco(@PathVariable Long id) {
+    public EnderecoDto getEndereco(@PathVariable Long id) {
         return enderecoService.getEnderecoById(id);
     }
 
     @PostMapping
-    public Endereco createEndereco(@RequestBody Endereco endereco) {
+    public EnderecoDto createEndereco(@RequestBody EnderecoDto endereco) {
         return enderecoService.saveEndereco(endereco);
     }
     @GetMapping("/all")
-    public List<Endereco> getAllEnderecos() {
+    public List<EnderecoDto> getAllEnderecos() {
         return enderecoService.getAllEnderecos();
     }
 
     @PutMapping("/{id}")
-    public Endereco updateEndereco(@PathVariable Long id, @RequestBody Endereco endereco) {
+    public EnderecoDto updateEndereco(@PathVariable Long id, @RequestBody EnderecoDto endereco) {
         return enderecoService.updateEndereco(id, endereco);
     }
 

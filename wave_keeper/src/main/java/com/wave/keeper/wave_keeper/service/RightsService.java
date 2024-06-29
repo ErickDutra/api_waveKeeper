@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.wave.keeper.wave_keeper.dto.RightsDto;
 import com.wave.keeper.wave_keeper.repository.RightsRepository;
 import com.wave.keeper.wave_keeper.tables.Rights;
 
@@ -17,29 +18,44 @@ public class RightsService {
     }
 
     public void  deleteRight(Long id) {
-        rightsRepository.deleteById(id);
+        Rights rightsDb = rightsRepository.findById(id).orElseThrow(
+            () -> new RuntimeException("Direitos não encontrados para ID: " + id));
+        rightsRepository.delete(rightsDb);
     }
 
-    public Rights getRight(Long id) {
-        return rightsRepository.findById(id).orElse(null);
+    public RightsDto getRights(Long id) {
+        Rights rights = rightsRepository.findById(id).orElseThrow(
+            () -> new RuntimeException("Direitos não encontrados para ID: " + id));
+        return new RightsDto(rights.getId(), rights.getEntidade(), rights.getVendedor(), rights.getDateStart(), rights.getDateOver(),rights.getPrice());
     }
 
-    public Rights saveRight(Rights right) {
-        return rightsRepository.save(right);
+    public RightsDto saveRight(RightsDto right) {
+        Rights rights = new Rights();
+        rights.setEntidade(right.entidade());
+        rights.setVendedor(right.vendedor());
+        rights.setDateStart(right.dateStart());
+        rights.setDateOver(right.dateOver());
+        rights.setPrice(right.price());
+        Rights rightsDb = rightsRepository.save(rights);
+        return new RightsDto(rightsDb.getId(), rightsDb.getEntidade(), rightsDb.getVendedor(), rightsDb.getDateStart(), rightsDb.getDateOver(), rightsDb.getPrice());
     }
 
     
-    public Rights updateRight(Long id, Rights rightsDetails) {
-        Rights rightsToUpdate = rightsRepository.findById(id).orElse(null);
-        rightsToUpdate.setEntidade(rightsDetails.getEntidade());
-        rightsToUpdate.setVendedor(rightsDetails.getVendedor());
-        rightsToUpdate.setDateStart(rightsDetails.getDateStart());
-        rightsToUpdate.setDateOver(rightsDetails.getDateOver());
-        return rightsRepository.save(rightsToUpdate);
+    public RightsDto updateRight(Long id, RightsDto rightsDetails) {
+        Rights rights = rightsRepository.findById(id).orElseThrow(
+            () -> new RuntimeException("Direitos não encontrados para ID: " + id));
+        rights.setEntidade(rightsDetails.entidade());
+        rights.setVendedor(rightsDetails.vendedor());
+        rights.setDateStart(rightsDetails.dateStart());
+        rights.setDateOver(rightsDetails.dateOver());
+        rights.setPrice(rightsDetails.price());
+        Rights rightsDb = rightsRepository.save(rights);
+        return new RightsDto(rightsDb.getId(), rightsDb.getEntidade(), rightsDb.getVendedor(), rightsDb.getDateStart(), rightsDb.getDateOver(), rightsDb.getPrice());
     }
 
-    public List<Rights> getAllRights() {
-        return rightsRepository.findAll();
+    public List<RightsDto> getAllRights() {
+        return rightsRepository.findAll().stream()
+        .map(rights -> new RightsDto(rights.getId(), rights.getEntidade(), rights.getVendedor(), rights.getDateStart(), rights.getDateOver(), rights.getPrice())).toList();
     }
 
 }

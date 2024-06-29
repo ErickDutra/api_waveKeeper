@@ -46,5 +46,6 @@ public class Rights {
     @Column(name = "date_over", nullable = true)
     private Date dateOver;
 
-
+    @Column(name = "price", nullable = true)
+    private Long price;
 }

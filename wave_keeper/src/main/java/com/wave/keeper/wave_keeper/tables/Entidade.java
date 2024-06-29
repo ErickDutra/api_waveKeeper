@@ -28,17 +28,17 @@ public class Entidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
 
     @Column(name = "Titulo", nullable = false, length = 150)
-    private String nome;
+    private String titulo;
 
     @Column(name = "Url", nullable = false)
     private String url;
 
     @ManyToOne
     @JoinColumn(name = "propietario_id", nullable = false)
-    private Usuario usuario;
+    private Usuario proprietario;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "data_cadastro", nullable = false)
