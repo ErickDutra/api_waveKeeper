@@ -70,5 +70,18 @@ public class UsuarioService{
                 usuario.getDateRegister()
         );
     }
+
+    public UsuarioDto login(String email, String senha) {
+        Usuario usuario = usuarioRepository.findByEmailAndSenha(email, senha)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com email: " + email));
+        return new UsuarioDto(
+                usuario.getId(), 
+                usuario.getNome(), 
+                usuario.getCpf_cnpj(), 
+                usuario.getEmail(), 
+                usuario.getSenha(), 
+                usuario.getDateRegister()
+        );
+    }
     
 }
