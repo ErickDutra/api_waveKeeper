@@ -2,12 +2,16 @@ package com.wave.keeper.wave_keeper.tables;
 
 
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -36,7 +40,7 @@ public class Endereco {
     private Integer numero;
 
     @Column(name = "logradouro", nullable = false, length = 150)
-    private Long logradouro;
+    private Long zipcode;
 
     @Column(name = "cidade", nullable = false, length = 150)
     private String cidade;
@@ -47,5 +51,13 @@ public class Endereco {
     @ManyToOne
     @JoinColumn(name = "pais_id", nullable = false)
     private Pais pais;
+
+    @ManyToMany
+    @JoinTable(
+        name = "endereco_usuario",
+        joinColumns = @JoinColumn(name = "endereco_id"),
+        inverseJoinColumns = @JoinColumn(name = "usuario_id")
+    )
+    private Set<Usuario> usuarios;
 
 }

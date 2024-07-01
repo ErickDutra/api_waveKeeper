@@ -2,63 +2,46 @@ package com.wave.keeper.wave_keeper.service;
 
 import com.wave.keeper.wave_keeper.dto.UsuarioDto;
 import com.wave.keeper.wave_keeper.repository.UsuarioRepository;
-import com.wave.keeper.wave_keeper.tables.Contato;
-import com.wave.keeper.wave_keeper.tables.Endereco;
 import com.wave.keeper.wave_keeper.tables.Usuario;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class UsuarioService{
 
-    private final UsuarioRepository usuarioRepository;
-
-
-    public UsuarioService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
+    @Autowired
+    private  UsuarioRepository usuarioRepository;
 
     public List<UsuarioDto> getUsuarios() {
         return usuarioRepository.findAll().stream()
-                .map(usuario -> new UsuarioDto(usuario.getId(), usuario.getNome(), usuario.getCpf_cnpj(), usuario.getEmail(), usuario.getEndereco(), usuario.getContato()))
+                .map(usuario -> new UsuarioDto(usuario.getId(), usuario.getNome(), usuario.getCpf_cnpj(), usuario.getEmail(), usuario.getSenha(), usuario.getDateRegister()))
                 .toList();
     }
 
     public UsuarioDto getUsuario(Long id) {
         Usuario usuarioDb = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
-        return new UsuarioDto(usuarioDb.getId(), usuarioDb.getNome(), usuarioDb.getCpf_cnpj(), usuarioDb.getEmail(), usuarioDb.getEndereco(), usuarioDb.getContato());
+        return new UsuarioDto(usuarioDb.getId(), usuarioDb.getNome(), usuarioDb.getCpf_cnpj(), usuarioDb.getEmail(), usuarioDb.getSenha(), usuarioDb.getDateRegister());
     }
 
     public UsuarioDto saveUsuario(UsuarioDto usuarioDto) {
-        Usuario usuario = new Usuario();
-        Endereco enderecoDto = usuarioDto.endereco();
-        Contato contatoDto = usuarioDto.contato();
-        Contato contato = usuario.getContato();
 
-        Endereco endereco = usuario.getEndereco();
+        Usuario usuario = new Usuario();
         usuario.setNome(usuarioDto.nome());
         usuario.setCpf_cnpj(usuarioDto.cpf_cnpj());
         usuario.setEmail(usuarioDto.email());
-        
-        contato.setNumero(contatoDto.getNumero());
-        contato.setSufixo(contatoDto.getSufixo());
-        contato.setDDD(contatoDto.getDDD());
-        usuario.setContato(contato);
-        
-        endereco.setNumero(enderecoDto.getNumero());
-        endereco.setLogradouro(enderecoDto.getLogradouro());
-        endereco.setCidade(enderecoDto.getCidade());
-        endereco.setEstado(enderecoDto.getEstado());
-        endereco.setRua(enderecoDto.getRua());
-
+        usuario.setSenha(usuarioDto.senha());
+        usuario.setDateRegister(Date.from(Instant.now()));
         Usuario usuarioDb = usuarioRepository.save(usuario);
-      
-        return new UsuarioDto(usuarioDb.getId(), usuarioDb.getNome(), usuarioDb.getCpf_cnpj(), usuarioDb.getEmail(), usuarioDb.getEndereco(), usuarioDb.getContato());
+
+        return new UsuarioDto(usuarioDb.getId(), usuarioDb.getNome(), usuarioDb.getCpf_cnpj(), usuarioDb.getEmail(), usuarioDb.getSenha(), usuarioDb.getDateRegister());
     }
 
     public void deleteUsuario(UsuarioDto usuarioDto) {
@@ -74,32 +57,17 @@ public class UsuarioService{
         usuario.setNome(usuarioDto.nome());
         usuario.setCpf_cnpj(usuarioDto.cpf_cnpj());
         usuario.setEmail(usuarioDto.email());
-
-        Endereco enderecoDto = usuarioDto.endereco();
-        Contato contatoDto = usuarioDto.contato();
-
-        Endereco endereco = usuario.getEndereco();
-
-        endereco.setNumero(enderecoDto.getNumero());
-        endereco.setLogradouro(enderecoDto.getLogradouro());
-        endereco.setCidade(enderecoDto.getCidade());
-        endereco.setEstado(enderecoDto.getEstado());
-        endereco.setRua(enderecoDto.getRua());
-
-        Contato contato = usuario.getContato();
-        contato.setNumero(contatoDto.getNumero());
-        contato.setSufixo(contatoDto.getSufixo());
-        contato.setDDD(contatoDto.getDDD());
-
+        usuario.setSenha(usuarioDto.senha());
+        usuario.setDateRegister(Date.from(Instant.now()));
         usuarioRepository.save(usuario);
 
         return new UsuarioDto(
                 usuario.getId(), 
                 usuario.getNome(), 
                 usuario.getCpf_cnpj(), 
-                usuario.getEmail(), 
-                usuario.getEndereco(), 
-                usuario.getContato()
+                usuario.getEmail(),
+                usuario.getSenha(),
+                usuario.getDateRegister()
         );
     }
     

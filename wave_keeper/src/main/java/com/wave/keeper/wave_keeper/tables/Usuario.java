@@ -7,8 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -39,17 +37,9 @@ public class Usuario {
     @Column(name = "email", nullable = false, length = 150,unique = true)
     private String email;
 
-    @Column(name = "senha", nullable = false, length = 10)
+    @Column(name = "senha", nullable = false, length = 150)
     private String senha;
 
-    @ManyToOne
-    @JoinColumn(name = "endereco_id", nullable = false)
-    private Endereco endereco;
-
-    @ManyToOne
-    @JoinColumn(name = "contato_id", nullable = false)
-    private Contato contato;
-    
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "data_cadastro", nullable = false)
     private Date dateRegister;
